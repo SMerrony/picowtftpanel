@@ -1,13 +1,19 @@
 /**
  * SPDX-FileCopyrightText: 2023 Stephen Merrony
- * SPDX-License-Identifier: BSD-3-Clause
+ * SPDX-License-Identifier: MIT
+ * 
+ * This code borrows heavily from the LCD driver in https://github.com/ncrawforth/VT2040
  */
 
 #ifndef LCD_H
 #define LCD_H
 
+#include "pico/sync.h"
+
 #include "graphics.h"
 #include "image.h"
+
+#define REFRESH_PERIOD_MS 100
 
 // LCD is rotated 180 degrees
 #define LCD_ROTATE false
@@ -38,10 +44,6 @@
 // 1.5 is outside spec but works
 #define LCD_PIO_CLKDIV_PIXELS 1.5f
 
-// ILI9488 gamma control
-// See datasheet PGAMCTRL/NGAMCTRL for details
-#define LCD_GAMMA 0, 9, 15, 5, 12, 7, 67, 170, 89, 12, 25, 13, 57, 60, 15
-
 // The small subset of ILI9488 commands we are currently using
 #define CMD_SLEEP_IN      0x10
 #define CMD_SLEEP_OUT     0x11
@@ -52,32 +54,13 @@
 #define CMD_PGAMCTRL      0xE0
 #define CMD_NGAMCTRL      0xE1
 
-// Colour palette
-#define LCD_COLORS \
-  0x000000, /* Black */ \
-  0xbf0000, /* Red */ \
-  0x00bf00, /* Green */ \
-  0xbfbf00, /* Yellow */ \
-  0x0000bf, /* Blue */ \
-  0xbf00bf, /* Magenta */ \
-  0x00bfbf, /* Cyan */ \
-  0xbfbfbf, /* White */ \
-  0x3f3f3f, /* Bright black */ \
-  0xff3f3f, /* Bright red */ \
-  0x3fff3f, /* Bright green */ \
-  0xffff3f, /* Bright yellow */ \
-  0x3f3fff, /* Bright blue */ \
-  0xff3fff, /* Bright magenta */ \
-  0x3fffff, /* Bright cyan */ \
-  0xffffff, /* Bright white */
-
-image_t * lcd_init();
+image_t * lcd_init(mutex_t *mtx);
 void lcd_off();
 void lcd_on();
 void lcd_invalidate();
 void lcd_brighten();
 void lcd_darken();
-void lcd_invert();
+// void lcd_invert();
 void lcd_rotate();
 
 #endif

@@ -1,0 +1,4 @@
+[submodule "pico_dht"]
+	path = pico_dht
+	url = https://github.com/vmilea/pico_dht.git
+	branch = master

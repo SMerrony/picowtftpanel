@@ -1,6 +1,6 @@
 /**
  * SPDX-FileCopyrightText: 2023 Stephen Merrony
- * SPDX-License-Identifier: BSD-3-Clause
+ * SPDX-License-Identifier: MIT
  */
 
 #ifndef FONT_5x7_H

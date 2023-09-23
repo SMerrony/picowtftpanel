@@ -1,6 +1,6 @@
 /**
  * SPDX-FileCopyrightText: 2023 Stephen Merrony
- * SPDX-License-Identifier: BSD-3-Clause
+ * SPDX-License-Identifier: MIT
  */
 
 #include "info_items.h"
@@ -13,11 +13,10 @@
 #include "graphics.h"
 #include "lcd.h"
 #include "mqtt.h"
-#include "rgbmatrix.h"
 
 static image_t *ii_image;
 static bool showing_urgent;
-static char urgent_msg[LCD_WIDTH + 1];
+static char urgent_msg[MAX_URGENT_CHARS];
 
 #ifdef CLOCK1
     const int INFO_ITEM_COUNT = 4;
@@ -31,13 +30,14 @@ static char urgent_msg[LCD_WIDTH + 1];
 #endif
 #ifdef CLOCK2
     const int INFO_ITEM_COUNT = 4;
-    info_item_t info_items[] = {
-        {"rgbmatrix/time_hhmm", "", "", 146, 6, "YELLOW", "BLACK", "5x7", 4},
-        {"rgbmatrix/time_date", "", "", 8, 120, "MAGENTA", "BLACK", "5x7", 4},
-        {"rgbmatrix/music_temp", "", "C", 8, 240, "CYAN", "BLACK", "5x7", 4},
-        {"rgbmatrix/outside_temp", "", "C", 320, 240, "GREEN", "BLACK", "5x7", 4}
+    const info_item_t info_items[] = {
+        {"rgbmatrix/time_hhmm", "", "", 146, 8, "YELLOW", "BLACK", "5x7", 4},
+        // {"rgbmatrix/time_hhmmss", "", "", 100, 8, "YELLOW", "BLACK", "5x7", 4},
+        {"rgbmatrix/time_date", "", "", 10, 120, "MAGENTA", "BLACK", "5x7", 4},
+        {"rgbmatrix/Pauls_Studio/temperature", "", "C", 8, 240, "CYAN", "BLACK", "5x7", 4},
+        {"rgbmatrix/outside_temp", "", "C", 330, 240, "GREEN", "BLACK", "5x7", 4}
     };
-    info_item_t urgent_item = {URGENT_TOPIC, "", "", 0, 120, "RED", "BLACK", "5x7", 4};
+    const info_item_t urgent_item = {URGENT_TOPIC, "", "", 0, 240, "RED", "BLACK", "5x7", 4};
 #endif
 #ifdef INFOPANEL1
     const int INFO_ITEM_COUNT = 5;
@@ -51,7 +51,7 @@ static char urgent_msg[LCD_WIDTH + 1];
     info_item_t urgent_item = {URGENT_TOPIC, "", "", 0, 44, "RED", "BLACK", "5x7", 2};
 #endif
 
-void ii_setup(image_t *image) {
+void info_setup(image_t *image) {
     ii_image = image;
     showing_urgent = false;
 }
@@ -75,6 +75,7 @@ void show_urgent() {
                         string2rgb(urgent_item.fg), 
                         string2rgb(urgent_item.bg)
                         );
+        lcd_invalidate();
     }
 }
 
@@ -89,13 +90,14 @@ void hide_urgent() {
                 BLACK, 
                 BLACK
                 );
+        lcd_invalidate();
     }
 }
 
 void show_data(int id, const char *data, int len) {
     if (id < INFO_ITEM_COUNT) { // handle msg on a subscribed topic
         char info[40] = "";
-        if (strlen(info_items[id].prefix) > 0) strcat(info_items[id].prefix, info);
+        if (strlen(info_items[id].prefix) > 0) strcat(info, info_items[id].prefix);
         strncat(info, data, len);
         if (strlen(info_items[id].suffix) > 0) strcat(info, info_items[id].suffix);
         if (strcmp(info_items[id].font, "3x5") == 0) {
@@ -172,7 +174,7 @@ void show_data(int id, const char *data, int len) {
     if (id == ID_URGENT) {
         if (strlen(data) > 0) {
             showing_urgent = true;
-            strncpy(urgent_msg, data, 40);
+            strncpy(urgent_msg, data, MAX_URGENT_CHARS);
             show_urgent();
         } else {
             hide_urgent();            

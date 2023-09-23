@@ -1,15 +1,18 @@
 /**
  * SPDX-FileCopyrightText: 2023 Stephen Merrony
- * SPDX-License-Identifier: BSD-3-Clause
+ * SPDX-License-Identifier: MIT
  */
 
 #include "mqtt.h"
 
+#include "math.h"
 #include "string.h"
 #include "pico/cyw43_arch.h"
 #include "pico/time.h"
 
 #include "info_items.h"
+
+#define TIMEOUT_MS 10000
 
 mqtt_client_t *client;
 ip_addr_t broker_addr;
@@ -82,7 +85,7 @@ static void mqtt_connection_cb(mqtt_client_t *client, void *arg, mqtt_connection
         }
     } else {
         printf("ERROR: MQTT connection CB got code %d - will retry in 10s\n", status);
-        busy_wait_ms(10000);    // wait 10s and retry
+        busy_wait_ms(TIMEOUT_MS);    // wait 10s and retry
         mqtt_connect();
     }
 }
@@ -109,7 +112,7 @@ void mqtt_connect() {
         printf("DEBUG: mqtt_connect OK\n");
     } else {
         printf("ERROR: mqtt_connect return %d\n", err);
-        sleep_ms(10000);    // wait 10s and retry
+        sleep_ms(TIMEOUT_MS);    // wait 10s and retry
         mqtt_connect();
     }
 }
@@ -119,4 +122,21 @@ bool mqtt_connected() {
         return true;
     else
         return false;
+}
+
+void mqtt_pub_request_cb(__attribute__((unused)) void *arg, err_t err) {
+    // MQTT_CLIENT_T *state = (MQTT_CLIENT_T *)arg;
+    if (err != 0) printf("DEBUG: mqtt_pub_request_cb: err %d\n", err);
+    // state->received++;
+}
+
+void publish_sensors(float temp, float hum) {
+    char temp_s[10];
+    char hum_s[10];
+    sprintf(temp_s, "%.1f", temp);
+    sprintf(hum_s, "%d", (int) round(hum));
+    cyw43_arch_lwip_begin();
+    mqtt_publish(client, TEMP_TOPIC, temp_s, strlen(temp_s), 0, 0, mqtt_pub_request_cb, 0);
+    mqtt_publish(client, HUMIDITY_TOPIC, hum_s, strlen(hum_s), 0, 0, mqtt_pub_request_cb, 0);
+    cyw43_arch_lwip_end();
 }
