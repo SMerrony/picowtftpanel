@@ -19,19 +19,18 @@ pico_sdk_init()
 
 add_subdirectory(pico_dht/dht)
 
-set(SOURCES
-	picowtftpanel.c
-	graphics.c
-	lcd.c
-	info_items.c
-	mqtt.c
-	)
-
 add_executable(picowtftpanel ${SOURCES})
 
-pico_generate_pio_header(picowtftpanel ${CMAKE_CURRENT_LIST_DIR}/lcd.pio)
+pico_generate_pio_header(picowtftpanel ${CMAKE_CURRENT_LIST_DIR}/src/lcd.pio)
 
-target_sources(picowtftpanel PRIVATE picowtftpanel.c)
+target_sources(picowtftpanel PUBLIC
+	${CMAKE_SOURCE_DIR}/src/graphics.c
+	${CMAKE_SOURCE_DIR}/src/info_items.c
+	${CMAKE_SOURCE_DIR}/src/lcd.c
+	${CMAKE_SOURCE_DIR}/src/mqtt.c
+	${CMAKE_SOURCE_DIR}/src/picowtftpanel.c
+	${CMAKE_SOURCE_DIR}/src/picowtftpanel.c
+)
 
 target_include_directories(picowtftpanel PRIVATE
         ${CMAKE_CURRENT_LIST_DIR}
