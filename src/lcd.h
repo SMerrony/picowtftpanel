@@ -13,7 +13,7 @@
 #include "graphics.h"
 #include "image.h"
 
-#define REFRESH_PERIOD_MS 100
+#define UPDATE_PERIOD_MS 100
 
 // LCD is rotated 180 degrees
 #define LCD_ROTATE false

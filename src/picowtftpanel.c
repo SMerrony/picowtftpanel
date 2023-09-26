@@ -23,12 +23,12 @@
 #define RETRY_MS 5000
 #define BLINK_PERIOD_MS 1000
 #define WATCHDOG_TIMEOUT_MS  3000 // max is ~4700
-#define DHT_SAMPLE_PERIOD 60 // multiply by BLINK_PERIOD_MS to get real period
+#define DHT_SAMPLE_PERIOD 120 // multiply by BLINK_PERIOD_MS to get real period
 
 static image_t * image_ptr;
 static mutex_t image_mutex;
 static const dht_model_t DHT_MODEL = DHT22;
-static const uint DATA_PIN = 1; // GPIO1 - physical pin 2
+static const uint DATA_PIN = 7; // GPIO7 - physical pin 10
 
 int main() {
     stdio_init_all();
@@ -73,7 +73,7 @@ int main() {
     watchdog_enable(WATCHDOG_TIMEOUT_MS, true);
 
     bool flash_toggle = false;
-    int dht_counter = 0;
+    int dht_counter = DHT_SAMPLE_PERIOD - 1; // we try to get an inital reading quite quickly
     float humidity = 0.0f;
     float temperature = 0.0f;
     while (true) {

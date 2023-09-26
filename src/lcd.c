@@ -18,8 +18,6 @@
 #include "lcd.h"
 #include "lcd.pio.h"
 
-#include "image.h"
-
 volatile bool rotate = LCD_ROTATE;
 volatile int dirty;
 int brightness = BRIGHTNESS_DEFAULT;
@@ -119,7 +117,7 @@ void core1_main() {
   pwm_set_enabled(pwm_gpio_to_slice_num(LCD_PIN_LED), 1);
 
   while (1) {
-    while (dirty == 0) busy_wait_ms(REFRESH_PERIOD_MS);
+    while (dirty == 0) busy_wait_ms(UPDATE_PERIOD_MS);
     dirty--;
 
     // if (rotate) {

@@ -9,7 +9,6 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "config.h"
 #include "graphics.h"
 #include "lcd.h"
 #include "mqtt.h"
