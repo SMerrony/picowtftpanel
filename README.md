@@ -7,7 +7,7 @@ reports climate values via MQTT.
 
 A desktop case design for the project (FreeCAD and .3mf files) may be found in the `3D` directory.
 
-![Alt text](docs/PicowTFTPanel_Case.jpg)
+![Built!](docs/PicowTFTPanel_Case.jpg)
 
 ```mermaid
 ---
