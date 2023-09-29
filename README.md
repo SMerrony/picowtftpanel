@@ -7,9 +7,11 @@ reports climate values via MQTT.
 
 A desktop case design for the project (FreeCAD and .3mf files) may be found in the `3D` directory.
 
+![Alt text](docs/PicowTFTPanel_Case.jpg)
+
 ```mermaid
 ---
-title: Typical IOT Setup
+title: Typical HA Setup
 ---
 flowchart LR
     I[Internet] --- | | R[Node-Red]

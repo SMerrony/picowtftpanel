@@ -30,11 +30,11 @@ static char urgent_msg[MAX_URGENT_CHARS];
 #ifdef CLOCK2
     const int INFO_ITEM_COUNT = 4;
     const info_item_t info_items[] = {
-        {"rgbmatrix/time_hhmm", "", "", 146, 8, "YELLOW", "BLACK", "5x7", 4},
+        {"rgbmatrix/time_hhmm", "", "", 134, 10, "YELLOW", "BLACK", "5x7", 4},
         // {"rgbmatrix/time_hhmmss", "", "", 100, 8, "YELLOW", "BLACK", "5x7", 4},
-        {"rgbmatrix/time_date", "", "", 10, 120, "MAGENTA", "BLACK", "5x7", 4},
-        {"rgbmatrix/Pauls_Studio/temperature", "", "C", 8, 240, "CYAN", "BLACK", "5x7", 4},
-        {"rgbmatrix/outside_temp", "", "C", 330, 240, "GREEN", "BLACK", "5x7", 4}
+        {"rgbmatrix/time_date", "", "", 10, 126, "MAGENTA", "BLACK", "5x7", 4},
+        {"rgbmatrix/Pauls_Studio/temperature", "", "C", 8, 250, "CYAN", "BLACK", "5x7", 4},
+        {"rgbmatrix/outside_temp", "", "C", 330, 250, "GREEN", "BLACK", "5x7", 4}
     };
     const info_item_t urgent_item = {URGENT_TOPIC, "", "", 0, 240, "RED", "BLACK", "5x7", 4};
 #endif
