@@ -36,7 +36,7 @@ static char urgent_msg[MAX_URGENT_CHARS];
         {"rgbmatrix/Pauls_Studio/temperature", "", "C", 8, 250, "CYAN", "BLACK", "5x7", 4},
         {"rgbmatrix/outside_temp", "", "C", 330, 250, "GREEN", "BLACK", "5x7", 4}
     };
-    const info_item_t urgent_item = {URGENT_TOPIC, "", "", 0, 240, "RED", "BLACK", "5x7", 4};
+    const info_item_t urgent_item = {URGENT_TOPIC, "", "", 0, 250, "RED", "BLACK", "5x7", 4};
 #endif
 #ifdef INFOPANEL1
     const int INFO_ITEM_COUNT = 5;

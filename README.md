@@ -31,6 +31,11 @@ Rename the `dummy_wifi_config.h` to `wifi_config.h` and edit it to suit your WiF
 * `picowtftpanel.c` has the pin definition for the AM2302 near the top
 * `image.h` includes the pixel dimensions of the panel
 
+## Software Update
+Rebuild, then from the `build` directory...
+
+`picotool load picowtftpanel.uf2 -f`
+
 ### Pico W Pin Allocation
 ![Top View](image.png)
  

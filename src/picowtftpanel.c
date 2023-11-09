@@ -24,6 +24,8 @@
 #define BLINK_PERIOD_MS 1000
 #define WATCHDOG_TIMEOUT_MS  3000 // max is ~4700
 #define DHT_SAMPLE_PERIOD 120 // multiply by BLINK_PERIOD_MS to get real period
+#define DHT_TEMP_OFFSET -1.0  // Some units need calibration and an offset applied
+#define DHT_HUM_OFFSET -5
 
 static image_t * image_ptr;
 static mutex_t image_mutex;
@@ -90,7 +92,7 @@ int main() {
             dht_result_t result = dht_finish_measurement_blocking(&dht, &humidity, &temperature);
             if (result == DHT_RESULT_OK) {
                 if (mqtt_connected()) {
-                    publish_sensors(temperature, humidity);
+                    publish_sensors(temperature + DHT_TEMP_OFFSET, humidity + DHT_HUM_OFFSET);
                 }
             } else {
                 printf("WARNING: DHT Sensor read failure\n");
